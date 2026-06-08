@@ -55,3 +55,38 @@ def expected_calibration_error(
         if b.count:
             ece += (b.count / n) * abs(b.avg_confidence - b.accuracy)
     return ece
+
+
+_EPS = 1e-7
+
+
+def _logit(p: np.ndarray) -> np.ndarray:
+    p = np.clip(p, _EPS, 1 - _EPS)
+    return np.log(p / (1 - p))
+
+
+def _sigmoid(z: np.ndarray) -> np.ndarray:
+    return 1.0 / (1.0 + np.exp(-z))
+
+
+def _nll(p: np.ndarray, y: np.ndarray) -> float:
+    p = np.clip(p, _EPS, 1 - _EPS)
+    return float(-np.mean(y * np.log(p) + (1 - y) * np.log(1 - p)))
+
+
+def fit_temperature(confidences: Sequence[float], labels: Sequence[int]) -> float:
+    """Fit a temperature T > 0 that recalibrates confidences (minimises NLL)."""
+    z = _logit(np.asarray(confidences, dtype=float))
+    y = np.asarray(labels, dtype=float)
+    best_t, best_nll = 1.0, float("inf")
+    for t in np.geomspace(0.05, 20.0, 200):
+        nll = _nll(_sigmoid(z / float(t)), y)
+        if nll < best_nll:
+            best_nll, best_t = nll, float(t)
+    return best_t
+
+
+def apply_temperature(confidences: Sequence[float], temperature: float) -> list[float]:
+    """Rescale confidences by a fitted temperature (ranking unchanged)."""
+    z = _logit(np.asarray(confidences, dtype=float))
+    return [float(x) for x in _sigmoid(z / temperature)]

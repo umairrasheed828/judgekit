@@ -5,8 +5,10 @@ from judgekit.llm_judge import LLMJudge
 from judgekit.types import Axis, Judgment, Sample
 from judgekit.calibration import (
     ReliabilityBin,
+    apply_temperature,
     brier_score,
     expected_calibration_error,
+    fit_temperature,
     reliability_bins,
 )
 
@@ -23,4 +25,6 @@ __all__ = [
     "brier_score",
     "expected_calibration_error",
     "reliability_bins",
+    "apply_temperature",
+    "fit_temperature",
 ]
