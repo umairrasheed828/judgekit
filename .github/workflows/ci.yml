@@ -17,6 +17,8 @@ jobs:
       - run: uv run ruff check .
       - run: uv run mypy src
       - run: uv run pytest
+      - name: Validate example imports
+        run: uv run python -c "import runpy; runpy.run_path('examples/quickstart.py', run_name='ci-check')"
       - run: uv build
 
 

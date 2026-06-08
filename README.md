@@ -1,5 +1,7 @@
 # judgekit
 
+![CI](https://github.com/umairrasheed828/judgekit/actions/workflows/ci.yml/badge.svg)
+
 Calibrated, rigorous evaluation for LLM judges — a small, dependency-light Python library.
 
 Most "LLM-as-judge" setups score an output and stop. `judgekit` adds the part that makes
