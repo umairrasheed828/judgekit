@@ -14,6 +14,11 @@ from judgekit.calibration import (
     calibration_report,
 )
 
+from judgekit.stats import (
+    bootstrap_ci,
+    cohens_kappa,
+)
+
 __all__ = [
     "Axis",
     "EvalResult",
@@ -31,4 +36,6 @@ __all__ = [
     "fit_temperature",
     "CalibrationReport",
     "calibration_report",
+    "bootstrap_ci",
+    "cohens_kappa",
 ]
