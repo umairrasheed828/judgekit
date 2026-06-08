@@ -3,6 +3,12 @@ from judgekit.base import Judge
 from judgekit.evaluate import EvalResult, evaluate
 from judgekit.llm_judge import LLMJudge
 from judgekit.types import Axis, Judgment, Sample
+from judgekit.calibration import (
+    ReliabilityBin,
+    brier_score,
+    expected_calibration_error,
+    reliability_bins,
+)
 
 __all__ = [
     "Axis",
@@ -13,4 +19,8 @@ __all__ = [
     "Sample",
     "evaluate",
     "openai_complete",
+    "ReliabilityBin",
+    "brier_score",
+    "expected_calibration_error",
+    "reliability_bins",
 ]
