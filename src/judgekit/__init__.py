@@ -19,6 +19,11 @@ from judgekit.stats import (
     cohens_kappa,
 )
 
+from judgekit.bias import (
+    BiasReport,
+    verbosity_bias,
+)
+
 __all__ = [
     "Axis",
     "EvalResult",
@@ -38,4 +43,6 @@ __all__ = [
     "calibration_report",
     "bootstrap_ci",
     "cohens_kappa",
+    "verbosity_bias",
+    "BiasReport",
 ]
