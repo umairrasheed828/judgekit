@@ -10,6 +10,8 @@ from judgekit.calibration import (
     expected_calibration_error,
     fit_temperature,
     reliability_bins,
+    CalibrationReport,
+    calibration_report,
 )
 
 __all__ = [
@@ -27,4 +29,6 @@ __all__ = [
     "reliability_bins",
     "apply_temperature",
     "fit_temperature",
+    "CalibrationReport",
+    "calibration_report",
 ]

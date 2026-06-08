@@ -90,3 +90,36 @@ def apply_temperature(confidences: Sequence[float], temperature: float) -> list[
     """Rescale confidences by a fitted temperature (ranking unchanged)."""
     z = _logit(np.asarray(confidences, dtype=float))
     return [float(x) for x in _sigmoid(z / temperature)]
+
+
+@dataclass
+class CalibrationReport:
+    n: int
+    ece: float
+    brier: float
+    temperature: float
+    ece_after: float
+    bins: list[ReliabilityBin]
+
+    def summary(self) -> str:
+        return (
+            f"n={self.n}  ECE={self.ece:.3f}  Brier={self.brier:.3f}  "
+            f"T={self.temperature:.2f}  ECE_after={self.ece_after:.3f}"
+        )
+
+
+def calibration_report(
+    confidences: Sequence[float], labels: Sequence[int], n_bins: int = 10
+) -> CalibrationReport:
+    """Full calibration picture in one call: metrics + fitted temperature + after-ECE."""
+    t = fit_temperature(confidences, labels)
+    return CalibrationReport(
+        n=len(confidences),
+        ece=expected_calibration_error(confidences, labels, n_bins),
+        brier=brier_score(confidences, labels),
+        temperature=t,
+        ece_after=expected_calibration_error(
+            apply_temperature(confidences, t), labels, n_bins
+        ),
+        bins=reliability_bins(confidences, labels, n_bins),
+    )
